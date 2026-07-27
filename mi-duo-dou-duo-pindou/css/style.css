@@ -834,6 +834,11 @@ body {
 .ledger-order-main small { color:#aa979f; font-size:10px; }
 .ledger-order > strong { color:#4f914e; font-size:13px; white-space:nowrap; }
 .ledger-order-actions { display:flex; align-items:center; gap:5px; }
+.ledger-add-form { margin:10px 0; padding:10px; border:1px dashed #e5b5c9; border-radius:9px; background:#fff8fb; }
+.ledger-add-form > strong { display:block; margin-bottom:7px; color:#74445a; font-size:12px; }
+.ledger-add-fields { display:grid; grid-template-columns:1fr 1fr 78px 90px auto; gap:5px; align-items:center; }
+.ledger-add-fields input, .ledger-add-fields select { min-width:0; padding:7px 6px; border:1px solid #efd1e0; border-radius:7px; background:#fff; font-size:11px; }
+@media (max-width:520px) { .ledger-add-fields { grid-template-columns:1fr 1fr; } .ledger-add-fields .text-btn { grid-column:2; } }
 .ledger-amount-input { width:70px; padding:5px; border:1px solid #efd1e0; border-radius:6px; color:#4f914e; font-weight:700; text-align:right; }
 .ledger-delete { border:0; border-radius:6px; padding:5px 6px; background:#fff0f0; color:#c53f43; cursor:pointer; }
 .ledger-actions { display:flex; justify-content:flex-end; gap:12px; }

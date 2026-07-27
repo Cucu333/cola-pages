@@ -112,7 +112,8 @@ function createSeatState(seatId) {
 function storageGet(key) {
   try {
     const val = localStorage.getItem(STORAGE_PREFIX + key);
-    return val ? JSON.parse(val) : null;
+    if (!val || val === 'undefined' || val === 'null') return null;
+    return JSON.parse(val);
   } catch (e) {
     console.error('存储读取错误:', e);
     return null;
