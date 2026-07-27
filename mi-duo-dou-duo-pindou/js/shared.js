@@ -29,10 +29,14 @@ function saveExtraRules(rules) { storageSet('extra_rules', { ...DEFAULT_EXTRA_RU
 const EXTRA_RATE = getExtraRules().rate;
 
 const DEFAULT_ACCESSORIES = [
-  { id: 'beads', name: '拼豆材料包', price: 5, stock: 100, image: '' },
-  { id: 'board', name: '拼豆底板', price: 3, stock: 50, image: '' },
-  { id: 'keychain', name: '钥匙扣配件', price: 2, stock: 80, image: '' },
-  { id: 'magnet', name: '冰箱贴配件', price: 2, stock: 80, image: '' }
+  { id: 'beads', category:'材料包', name: '拼豆材料包', price: 5, stock: 100, image: '' },
+  { id: 'board', category:'拼豆工具', name: '拼豆底板', price: 3, stock: 50, image: '' },
+  { id: 'clip', category:'拼豆工具', name: '豆夹', price: 2, stock: 80, image: '' },
+  { id: 'bead-red', category:'拼豆颜色', name: '豆 · 红色', price: 1, stock: 100, image: '' },
+  { id: 'bead-blue', category:'拼豆颜色', name: '豆 · 蓝色', price: 1, stock: 100, image: '' },
+  { id: 'bead-yellow', category:'拼豆颜色', name: '豆 · 黄色', price: 1, stock: 100, image: '' },
+  { id: 'keychain', category:'饰品', name: '钥匙扣配件', price: 2, stock: 80, image: '' },
+  { id: 'magnet', category:'饰品', name: '冰箱贴配件', price: 2, stock: 80, image: '' }
 ];
 const DEFAULT_IRON_MODES = ['普通熨烫', '快速熨烫', '分色熨烫'];
 const ORDER_ANIMALS = ['🐶', '🦮', '🐕', '🐩', '🐕‍🦺', '🦴'];
@@ -40,8 +44,15 @@ const ORDER_COLORS = ['#ff8fba', '#8db8ff', '#a9d99a', '#c3a6ef', '#ffbd75', '#7
 const ORDER_BORDER_STYLES = ['solid', 'dashed', 'double'];
 function pickOrderColor() { return ORDER_COLORS[Math.floor(Math.random() * ORDER_COLORS.length)]; }
 function pickOrderBorderStyle() { return ORDER_BORDER_STYLES[Math.floor(Math.random() * ORDER_BORDER_STYLES.length)]; }
-function getAccessories() { return storageGet('accessories') || DEFAULT_ACCESSORIES.map(x => ({ ...x })); }
-function saveAccessories(items) { storageSet('accessories', items); }
+function getAccessories() {
+  const stored = storageGet('accessories');
+  if (!stored) return DEFAULT_ACCESSORIES.map(x => ({ ...x }));
+  const legacyCategory = { beads:'材料包', board:'拼豆工具', clip:'拼豆工具', 'bead-red':'拼豆颜色', 'bead-blue':'拼豆颜色', 'bead-yellow':'拼豆颜色', keychain:'饰品', magnet:'饰品' };
+  const normalized = stored.map(x => ({ ...x, category:x.category || legacyCategory[x.id] || '饰品' }));
+  const missing = DEFAULT_ACCESSORIES.filter(seed => !normalized.some(x => x.id === seed.id || x.name === seed.name));
+  return normalized.concat(missing.map(x => ({ ...x })));
+}
+function saveAccessories(items) { storageSet('accessories', items.map(x => ({ category:'饰品', ...x }))); }
 function getIronModes() { return storageGet('iron_modes') || [...DEFAULT_IRON_MODES]; }
 function pickOrderAnimal() { return ORDER_ANIMALS[Math.floor(Math.random() * ORDER_ANIMALS.length)]; }
 function saveIronModes(items) { storageSet('iron_modes', items.filter(Boolean)); }
@@ -226,8 +237,9 @@ function clearSeatOrder(seatId) {
 // 计算座位已用时间（毫秒，扣除暂停）
 function getElapsedMs(state) {
   if (!state.startTime) return 0;
-  const now = state.status === 'paused' ? state.pauseTime : Date.now();
-  return now - state.startTime - state.pausedDuration;
+  const pauseAt = state.status === 'paused' && state.pauseTime ? state.pauseTime : Date.now();
+  const paused = Number(state.pausedDuration || 0);
+  return Math.max(0, pauseAt - state.startTime - paused);
 }
 
 // 格式化时间为 HH:MM:SS
@@ -271,7 +283,8 @@ function getRemainingMs(state) {
 
 // 是否超时
 function isOvertime(state) {
-  if (state.status !== 'occupied') return false;
+  // 暂停时冻结在暂停瞬间，暂停本身不显示超时；恢复或加时后重新计算。
+  if (!state || state.status !== 'occupied') return false;
   const remaining = getRemainingMs(state);
   return remaining !== Infinity && remaining <= 0;
 }
