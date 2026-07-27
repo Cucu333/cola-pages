@@ -744,9 +744,10 @@ body {
 .settings-filter-tabs { display:flex; gap:6px; margin:10px 0; padding-bottom:7px; border-bottom:1px solid #f2dce7; }
 .settings-filter-tab { border:1px solid #efd1e0; border-radius:8px; padding:7px 14px; background:#fff8fb; color:#8c6073; font-size:11px; cursor:pointer; }
 .settings-filter-tab.active { background:#ffe2ef; border-color:#e25598; color:#b02f67; font-weight:700; }
+.settings-filter-tab .tag-delete { display:inline-block; margin-left:5px; color:#c07d98; font-weight:700; }
 .setting-image-empty { display:grid; place-items:center; width:28px; height:28px; border-radius:6px; background:#f7f1f4; color:#b39ca6; font-size:8px; }
 .accessory-setting-row[hidden], .custom-package-row[hidden] { display:none; }
-.accessory-table-head, .setting-row { display:grid; grid-template-columns:28px 72px minmax(110px,1fr) 62px 62px 82px 24px; gap:5px; align-items:center; }
+.accessory-table-head, .setting-row { display:grid; grid-template-columns:28px minmax(110px,1fr) 62px 62px 82px 24px; gap:5px; align-items:center; }
 .setting-image { width:28px; height:28px; object-fit:contain; border-radius:6px; background:#fff8fb; }
 .accessory-table-head { padding:0 8px 4px; color:#aa8294; font-size:10px; }
 .setting-row { padding:8px; margin-top:7px; background:#fff8fb; border:1px solid #f3dce7; border-radius:9px; }
@@ -769,8 +770,8 @@ body {
 .settings-seat-chip small { color:#aa929d; font-size:8px; }
 .settings-seat-chip button { position:absolute; top:1px; right:3px; border:0; background:none; color:#c8889f; font-size:12px; cursor:pointer; }
 .qr-note { display:block; color:#a78d98; font-size:10px; margin-top:8px; }
-@media (max-width:520px) { .settings-seat-grid { grid-template-columns:repeat(4, minmax(0,1fr)); } .change-seat-grid { grid-template-columns:repeat(4, minmax(0,1fr)); } .accessory-table-head { grid-template-columns:24px 58px minmax(80px,1fr) 45px 45px 55px 20px; font-size:8px; } }
-@media (max-width:520px) { .settings-layout { grid-template-columns:92px minmax(0,1fr); } .setting-row { grid-template-columns:24px 58px minmax(80px,1fr) 45px 45px 20px; } .setting-row input[type=file] { grid-column:3 / span 2; } .setting-row .remove-btn { grid-column:6; grid-row:1; } }
+@media (max-width:520px) { .settings-seat-grid { grid-template-columns:repeat(4, minmax(0,1fr)); } .change-seat-grid { grid-template-columns:repeat(4, minmax(0,1fr)); } .accessory-table-head { grid-template-columns:24px minmax(80px,1fr) 45px 45px 55px 20px; font-size:8px; } }
+@media (max-width:520px) { .settings-layout { grid-template-columns:92px minmax(0,1fr); } .setting-row { grid-template-columns:24px minmax(80px,1fr) 45px 45px 55px 20px; } .setting-row input[type=file] { grid-column:3 / span 2; } .setting-row .remove-btn { grid-column:6; grid-row:1; } }
 
 /* ===== 顶部营收与独立工作区 ===== */
 .header { text-align:left; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }

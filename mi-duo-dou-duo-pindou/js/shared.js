@@ -44,11 +44,16 @@ const ORDER_COLORS = ['#ff8fba', '#8db8ff', '#a9d99a', '#c3a6ef', '#ffbd75', '#7
 const ORDER_BORDER_STYLES = ['solid', 'dashed', 'double'];
 function pickOrderColor() { return ORDER_COLORS[Math.floor(Math.random() * ORDER_COLORS.length)]; }
 function pickOrderBorderStyle() { return ORDER_BORDER_STYLES[Math.floor(Math.random() * ORDER_BORDER_STYLES.length)]; }
+const DEFAULT_INVENTORY_TAGS = ['饰品', '工具', '豆子'];
+function getInventoryTags() { return storageGet('inventory_tags') || [...DEFAULT_INVENTORY_TAGS]; }
+function saveInventoryTags(tags) { storageSet('inventory_tags', Array.from(new Set(tags.map(x => String(x).trim()).filter(Boolean)))); }
+
 function getAccessories() {
   const stored = storageGet('accessories');
   if (!stored) return DEFAULT_ACCESSORIES.map(x => ({ ...x }));
-  const legacyCategory = { beads:'材料包', board:'拼豆工具', clip:'拼豆工具', 'bead-red':'拼豆颜色', 'bead-blue':'拼豆颜色', 'bead-yellow':'拼豆颜色', keychain:'饰品', magnet:'饰品' };
-  const normalized = stored.map(x => ({ ...x, category:x.category || legacyCategory[x.id] || '饰品' }));
+  const legacyCategory = { beads:'饰品', board:'工具', clip:'工具', 'bead-red':'豆子', 'bead-blue':'豆子', 'bead-yellow':'豆子', keychain:'饰品', magnet:'饰品' };
+  const legacyNameCategory = { '拼豆材料包':'饰品', '拼豆底板':'工具', '豆夹':'工具', '豆 · 红色':'豆子', '豆 · 蓝色':'豆子', '豆 · 黄色':'豆子', '钥匙扣配件':'饰品', '冰箱贴配件':'饰品' };
+  const normalized = stored.map(x => ({ ...x, category:legacyNameCategory[x.name] || (getInventoryTags().includes(x.category) ? x.category : (legacyCategory[x.id] || '饰品')) }));
   const missing = DEFAULT_ACCESSORIES.filter(seed => !normalized.some(x => x.id === seed.id || x.name === seed.name));
   return normalized.concat(missing.map(x => ({ ...x })));
 }
