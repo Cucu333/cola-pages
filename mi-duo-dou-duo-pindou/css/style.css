@@ -783,7 +783,7 @@ body {
 .queue-group + .queue-group { border-top:1px dashed #efd7e2; padding-top:12px; }
 .custom-package-row { display:grid; grid-template-columns:minmax(100px,1.5fr) 78px 72px 82px 34px; gap:6px; align-items:center; margin:7px 0; }
 .custom-package-row input, .custom-package-row select { min-width:0; padding:8px 6px; border:1px solid #efd1e0; border-radius:8px; background:#fff; font-size:11px; }
-.receipt-logo { display:block; width:62px; height:62px; object-fit:contain; margin:0 auto 8px; border-radius:12px; }
+.receipt-logo { display:block; width:100px; height:54px; object-fit:cover; object-position:center top; margin:0 auto 8px; border-radius:10px; }
 @media (max-width:520px) { .custom-package-row { grid-template-columns:minmax(90px,1fr) 62px 62px 70px 28px; gap:4px; } }
 
 /* ===== 今日小票：按参考图重排 ===== */
@@ -798,9 +798,10 @@ body {
 .ledger-summary-line, .ledger-channel, .ledger-grand { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .ledger-summary-line { color:#554951; font-size:13px; }
 .ledger-orders h4 { margin:0 0 8px; color:#4f914e; font-size:12px; }
-.ledger-order { display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid #f3ebed; }
-.ledger-order-main { display:grid; gap:3px; min-width:0; }
+.ledger-order { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f3ebed; min-height:34px; }
+.ledger-order-main { min-width:0; flex:1; overflow:hidden; }
 .ledger-order-main b { color:#4b3d43; font-size:12px; }
+.ledger-order-main span { display:block; color:#4b3d43; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ledger-order-main span { color:#6d5962; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ledger-order-main small { color:#aa979f; font-size:10px; }
 .ledger-order > strong { color:#4f914e; font-size:13px; white-space:nowrap; }
