@@ -201,9 +201,9 @@ function getExtraRequests() {
   return storageGet('extra_requests') || {};
 }
 
-function addExtraRequest(seatId) {
+function addExtraRequest(seatId, details = {}) {
   const requests = getExtraRequests();
-  requests[seatId] = { time: Date.now(), seatId };
+  requests[seatId] = { time: Date.now(), seatId, minutes:Number(details.minutes || 0), price:Number(details.price || 0) };
   storageSet('extra_requests', requests);
 }
 

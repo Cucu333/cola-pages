@@ -7,6 +7,7 @@ let selectedCustomerSecondSeat = null;
 let selectedCustomerSeatIds = [];
 let selectedCustomerAccessories = [];
 let customerIronFormOpen = false;
+let customerExtraFormOpen = false;
 
 const params = new URLSearchParams(window.location.search);
 currentSeatId = params.get('seat');
@@ -69,7 +70,7 @@ function renderCustomerView() {
       <div class="customer-timer" id="customer-timer-display">${remaining === Infinity ? '不限时' : formatTime(remaining)}</div><div class="customer-times"><span>开台时间：${new Date(state.startTime).toLocaleTimeString()}</span><span>${endLabel}</span></div>
       <div class="customer-related">关联座位：${(state.orderSeatIds || [currentSeatId]).join('+')}</div>
       ${state.status === 'paused' ? '<div class="request-badge">⏸ 店员已暂停计时</div>' : ''}${iron}${customerIronFormOpen ? renderIronForm() : ''}
-      <div class="customer-actions">${remaining !== Infinity ? `<button class="customer-btn" onclick="requestExtra()" ${request ? 'disabled' : ''}>${request ? '✓ 已申请加时' : '申请加时'}</button>` : ''}<button class="customer-btn secondary" onclick="openIronForm()">申请熨烫</button></div>
+      <div class="customer-actions">${remaining !== Infinity ? `<button class="customer-btn" onclick="requestExtra()" ${request ? 'disabled' : ''}>${request ? '✓ 已申请加时' : '申请加时'}</button>` : ''}<button class="customer-btn secondary" onclick="openIronForm()">申请熨烫</button></div>${customerExtraFormOpen ? renderExtraForm() : ''}
     </section>`;
 }
 
@@ -79,6 +80,7 @@ function renderCustomerPackages() {
 function renderCustomerAccessories() { const items = getAccessories().filter(x => Number(x.stock || 0) > 0); if (!items.length) return ''; return `<div class="customer-accessory-title">可选饰品（结账时一起计算）</div><div class="customer-accessories">${items.map(x => `<button type="button" class="customer-accessory ${selectedCustomerAccessories.includes(x.id) ? 'selected' : ''}" onclick="toggleCustomerAccessory('${x.id}')">${x.image ? `<img src="${x.image}" alt="">` : '<span class="accessory-placeholder">饰品</span>'}<b>${x.name}</b><small>¥${Number(x.price).toFixed(2)} · 库存${x.stock}</small></button>`).join('')}</div>`;
 }
 function renderIronForm() { const modes = getIronModes(); return `<div class="inline-form" id="iron-form"><h3>提交熨烫</h3><div class="customer-choice-label">熨烫方式</div><div class="customer-iron-tags">${modes.map((mode, i) => `<button type="button" class="status-tag ${i === 0 ? 'selected' : ''}" onclick="selectCustomerIronMode('${mode}', this)">${mode}</button>`).join('')}</div><label>上传拼豆图片（可选）<input id="iron-image" type="file" accept="image/*"></label><button type="button" class="customer-btn" onclick="submitIronRequest()">提交申请</button></div>`; }
+function renderExtraForm() { const rules = getExtraRules().options || []; return `<div class="inline-form extra-request-form" id="extra-form"><h3>选择加时规则</h3><p class="muted">请选择加时时长，价格会先展示给你，提交后由店员确认。</p><div class="customer-extra-options">${rules.map(x => `<button type="button" class="customer-extra-option" onclick="submitExtraRequest(${Number(x.minutes)}, ${Number(x.price)})"><b>+${Number(x.minutes)}分钟</b><span>¥${Number(x.price).toFixed(1)}</span></button>`).join('')}</div></div>`; }
 function selectCustomerCapacity(size, button) { selectedCustomerCapacity = size; selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = []; document.querySelectorAll('.party-btn').forEach(x => x.classList.remove('selected')); if (button) button.classList.add('selected'); const second = document.getElementById('customer-second-seat'); if (second) second.style.display = size > 1 ? '' : 'none'; const list = document.querySelector('.customer-package-list'); if (list) list.innerHTML = renderCustomerPackages(); }
 function toggleCustomerSeat(seatId, checkbox) { if (checkbox.checked) selectedCustomerSeatIds.push(seatId); else selectedCustomerSeatIds = selectedCustomerSeatIds.filter(id => id !== seatId); selectedCustomerSecondSeat = selectedCustomerSeatIds[0] || null; }
 
@@ -117,11 +119,8 @@ function updateLiveTime(state) {
 
 function toggleCustomerAccessory(accessoryId) { const state = getSeatState(currentSeatId); const selected = new Set(state.status === 'free' ? selectedCustomerAccessories : (state.selectedAccessories || [])); if (selected.has(accessoryId)) selected.delete(accessoryId); else selected.add(accessoryId); if (state.status === 'free') { selectedCustomerAccessories = [...selected]; renderCustomerView(); } else { updateSeatState(currentSeatId, { selectedAccessories: [...selected] }); renderCustomerView(); } }
 
-function requestExtra() {
-  addExtraRequest(currentSeatId);
-  renderCustomerView();
-  showToast('已通知前台，请稍候~');
-}
+function requestExtra() { if (getExtraRequests()[currentSeatId]) return; customerExtraFormOpen = !customerExtraFormOpen; renderCustomerView(); }
+function submitExtraRequest(minutes, price) { addExtraRequest(currentSeatId, { minutes, price }); customerExtraFormOpen = false; renderCustomerView(); showToast(`已申请加时 ${minutes} 分钟 · ¥${Number(price).toFixed(1)}，请等待店员确认`); }
 
 let pendingCustomerIronMode = null;
 function openIronForm() { pendingCustomerIronMode = getIronModes()[0] || '普通熨烫'; customerIronFormOpen = true; renderCustomerView(); }

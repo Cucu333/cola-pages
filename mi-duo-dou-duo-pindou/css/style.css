@@ -615,6 +615,13 @@ body {
 .inline-form h3 { margin: 0 0 14px; color: #d72c7b; }
 .inline-form label { display: block; margin: 12px 0; color: #666; font-size: 13px; }
 .inline-form select, .inline-form input[type=file] { display: block; width: 100%; margin-top: 6px; padding: 10px; border: 1px solid #efd1e0; border-radius: 8px; background: white; box-sizing: border-box; }
+.extra-request-form { background:#fff7df; border:1px solid #f2d58a; }
+.extra-request-form h3 { color:#9a6a00; }
+.customer-extra-options { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin-top:12px; }
+.customer-extra-option { display:flex; flex-direction:column; gap:4px; padding:11px 6px; border:1px solid #efc65b; border-radius:9px; background:#fffdf4; color:#805b00; cursor:pointer; }
+.customer-extra-option:hover { background:#fff0b5; }
+.customer-extra-option span { color:#d08400; font-weight:700; }
+@media (max-width:520px) { .customer-extra-options { grid-template-columns:1fr; } }
 .empty-state { padding: 60px 20px; color: #777; }
 .empty-icon { font-size: 42px; margin-bottom: 12px; }
 .customer-choice-label { color:#8c6073; font-size:13px; margin:10px 0 7px; }
