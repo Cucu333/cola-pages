@@ -39,7 +39,7 @@ function renderStats() {
   set('stat-people', s.people ?? s.arrivals ?? 0);
   set('stat-orders', s.orders ?? s.arrivals ?? 0);
   const overtimeCount = Number(s.overtime || 0) + liveOvertime;
-  const extraCount = Number(s.extraCount || 0);
+  const extraCount = Object.keys(getExtraRequests()).length;
   set('stat-overtime', `${overtimeCount}/${extraCount}`);
   set('stat-iron-queue', `${pendingIronCount}/${doneIronCount}`);
   const todayLedger = getTodayLedger();
@@ -54,12 +54,13 @@ function renderActionSummary() {
   const queue = getIronQueue();
   const confirmCount = queue.filter(x => x.status === 'pending').length;
   const activeIron = queue.filter(x => x.status === 'confirmed' || x.status === 'processing').length;
-  const extraCount = Object.keys(getExtraRequests()).length;
+  const extraRequests = Object.values(getExtraRequests());
+  const extraCount = extraRequests.length;
   const lowStock = getAccessories().filter(x => Number(x.stock || 0) <= Number(x.alertStock ?? 10));
   const items = [];
   if (confirmCount) items.push(`<button onclick="showIronQueue('pending')">🔥 ${confirmCount} 个熨烫待确认</button>`);
   if (activeIron) items.push(`<button onclick="showIronQueue('pending')">🧺 ${activeIron} 个熨烫处理中</button>`);
-  if (extraCount) items.push(`<button onclick="showExtraRequests()">⏱ ${extraCount} 个加时申请</button>`);
+  if (extraCount) items.push(`<button class="action-alert" onclick="showExtraRequests()">⏱ ${extraRequests.map(x => x.seatId).join('、')} 申请加时</button>`);
   if (lowStock.length) items.push(`<button onclick="openSettings();showSettingsSection('inventory', document.querySelector('.settings-nav-item'))">📦 ${lowStock.length} 项库存预警</button>`);
   el.innerHTML = items.length ? `<div class="action-summary-title">待处理事项</div><div class="action-summary-list">${items.join('')}</div>` : '<div class="action-summary-empty">待处理事项 · 当前没有需要处理的内容</div>';
 }

@@ -5,6 +5,8 @@ let selectedCustomerPackage = null;
 let selectedCustomerCapacity = 1;
 let selectedCustomerSecondSeat = null;
 let selectedCustomerSeatIds = [];
+let selectedCustomerAccessories = [];
+let customerIronFormOpen = false;
 
 const params = new URLSearchParams(window.location.search);
 currentSeatId = params.get('seat');
@@ -33,13 +35,13 @@ function renderCustomerView() {
   const container = document.getElementById('customer-content');
   const seat = getManagedSeats().find(s => s.id === currentSeatId);
   if (state.status === 'free') {
-    selectedCustomerCapacity = 1; selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = [];
+    selectedCustomerCapacity = selectedCustomerCapacity || 1;
     container.innerHTML = `
       <section class="customer-seat-info">
         <div class="customer-seat-number">${currentSeatId}</div>
         <div class="customer-package" style="color:#4CAF50">空闲座位 · 可选 1-4 人</div>
         <p class="muted">请选择套餐，确认后即可自助开台</p>
-        <div class="party-picker customer-party"><span>本次人数</span>${[1,2,3,4].map(n => `<button class="party-btn ${n === 1 ? 'selected' : ''}" onclick="selectCustomerCapacity(${n}, this)">${n}人</button>`).join('')}</div><div id="customer-second-seat" class="additional-seat-select" style="display:none"><span>请选择关联的固定座位</span>${getManagedSeats().filter(x => x.id !== currentSeatId && getSeatState(x.id).status === 'free').map(x => `<label><input type="checkbox" value="${x.id}" onchange="toggleCustomerSeat('${x.id}', this)"> ${x.id}</label>`).join('')}</div><div class="customer-package-list">${renderCustomerPackages()}</div>
+        <div class="party-picker customer-party"><span>本次人数</span>${[1,2,3,4].map(n => `<button class="party-btn ${n === 1 ? 'selected' : ''}" onclick="selectCustomerCapacity(${n}, this)">${n}人</button>`).join('')}</div><div id="customer-second-seat" class="additional-seat-select" style="display:none"><span>请选择关联的固定座位</span>${getManagedSeats().filter(x => x.id !== currentSeatId && getSeatState(x.id).status === 'free').map(x => `<label><input type="checkbox" value="${x.id}" onchange="toggleCustomerSeat('${x.id}', this)"> ${x.id}</label>`).join('')}</div><div class="customer-package-list">${renderCustomerPackages()}</div>${renderCustomerAccessories()}
         <p class="muted customer-readonly-note">到店/团购及付款、核销状态由店员登记</p>
         <button class="customer-btn" onclick="customerStartSeat()">确认自助开台</button>
       </section>`;
@@ -66,7 +68,7 @@ function renderCustomerView() {
       <div class="customer-animals">${animal}</div><div class="customer-seat-number">${currentSeatId}</div><div class="customer-status-text">${state.status === 'paused' ? '暂停' : overtime ? '超时' : '占用'}</div>
       <div class="customer-timer" id="customer-timer-display">${remaining === Infinity ? '不限时' : formatTime(remaining)}</div><div class="customer-times"><span>开台时间：${new Date(state.startTime).toLocaleTimeString()}</span><span>${endLabel}</span></div>
       <div class="customer-related">关联座位：${(state.orderSeatIds || [currentSeatId]).join('+')}</div>
-      ${state.status === 'paused' ? '<div class="request-badge">⏸ 店员已暂停计时</div>' : ''}${iron}
+      ${state.status === 'paused' ? '<div class="request-badge">⏸ 店员已暂停计时</div>' : ''}${iron}${customerIronFormOpen ? renderIronForm() : ''}
       <div class="customer-actions">${remaining !== Infinity ? `<button class="customer-btn" onclick="requestExtra()" ${request ? 'disabled' : ''}>${request ? '✓ 已申请加时' : '申请加时'}</button>` : ''}<button class="customer-btn secondary" onclick="openIronForm()">申请熨烫</button></div>
     </section>`;
 }
@@ -74,6 +76,9 @@ function renderCustomerView() {
 function renderCustomerPackages() {
   return getPackages().filter(p => p.capacity === (selectedCustomerCapacity === 1 ? 1 : 2)).map(p => `<button class="customer-package-btn" data-package="${p.id}" onclick="selectCustomerPackage('${p.id}', this)"><b>${p.name}</b><span>¥${p.price.toFixed(1)} · ${p.duration ? p.duration + '分钟' : '不限时'}</span></button>`).join('');
 }
+function renderCustomerAccessories() { const items = getAccessories().filter(x => Number(x.stock || 0) > 0); if (!items.length) return ''; return `<div class="customer-accessory-title">可选饰品（结账时一起计算）</div><div class="customer-accessories">${items.map(x => `<button type="button" class="customer-accessory ${selectedCustomerAccessories.includes(x.id) ? 'selected' : ''}" onclick="toggleCustomerAccessory('${x.id}')">${x.image ? `<img src="${x.image}" alt="">` : '<span class="accessory-placeholder">饰品</span>'}<b>${x.name}</b><small>¥${Number(x.price).toFixed(2)} · 库存${x.stock}</small></button>`).join('')}</div>`;
+}
+function renderIronForm() { const modes = getIronModes(); return `<div class="inline-form" id="iron-form"><h3>提交熨烫</h3><div class="customer-choice-label">熨烫方式</div><div class="customer-iron-tags">${modes.map((mode, i) => `<button type="button" class="status-tag ${i === 0 ? 'selected' : ''}" onclick="selectCustomerIronMode('${mode}', this)">${mode}</button>`).join('')}</div><label>上传拼豆图片（可选）<input id="iron-image" type="file" accept="image/*"></label><button type="button" class="customer-btn" onclick="submitIronRequest()">提交申请</button></div>`; }
 function selectCustomerCapacity(size, button) { selectedCustomerCapacity = size; selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = []; document.querySelectorAll('.party-btn').forEach(x => x.classList.remove('selected')); if (button) button.classList.add('selected'); const second = document.getElementById('customer-second-seat'); if (second) second.style.display = size > 1 ? '' : 'none'; const list = document.querySelector('.customer-package-list'); if (list) list.innerHTML = renderCustomerPackages(); }
 function toggleCustomerSeat(seatId, checkbox) { if (checkbox.checked) selectedCustomerSeatIds.push(seatId); else selectedCustomerSeatIds = selectedCustomerSeatIds.filter(id => id !== seatId); selectedCustomerSecondSeat = selectedCustomerSeatIds[0] || null; }
 
@@ -91,10 +96,10 @@ function customerStartSeat() {
   if (selectedCustomerSeatIds.some(seatId => getSeatState(seatId).status !== 'free')) return showToast('关联座位刚刚被占用，请重新选择');
   const isCoupon = document.getElementById('customer-coupon')?.checked || false;
   const customerOrderSeats = [currentSeatId, ...selectedCustomerSeatIds];
-  const customerOrder = { status: 'occupied', packageId: selectedCustomerPackage, orderId: `${customerOrderSeats.join('+')}-order_${Date.now()}`, orderAnimal: pickOrderAnimal(), orderColor: pickOrderColor(), orderBorderStyle: pickOrderBorderStyle(), partySize: selectedCustomerCapacity, orderSeatIds: customerOrderSeats, arrivalType: '到店', paymentStatus: '未付款', couponStatus: '未核销', startTime: Date.now(), pauseTime: null, pausedDuration: 0, extraMinutes: 0, isCoupon, ironRequestedAt: null, ironImage: null, ironMode: null, ironDone: false, finishTime: null };
+  const customerOrder = { status: 'occupied', packageId: selectedCustomerPackage, selectedAccessories: [...selectedCustomerAccessories], orderId: `${customerOrderSeats.join('+')}-order_${Date.now()}`, orderAnimal: pickOrderAnimal(), orderColor: pickOrderColor(), orderBorderStyle: pickOrderBorderStyle(), partySize: selectedCustomerCapacity, orderSeatIds: customerOrderSeats, arrivalType: '到店', paymentStatus: '未付款', couponStatus: '未核销', startTime: Date.now(), pauseTime: null, pausedDuration: 0, extraMinutes: 0, isCoupon, ironRequestedAt: null, ironImage: null, ironMode: null, ironDone: false, finishTime: null };
   customerOrderSeats.forEach(seatId => updateSeatState(seatId, { ...customerOrder, seatId }));
   updateTodayStats({ arrivals: 1, people: selectedCustomerCapacity, orders: 1, couponUsed: isCoupon ? 1 : 0 });
-  selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = [];
+  selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = []; selectedCustomerAccessories = [];
   showToast('已自助开台，请开始创作');
   renderCustomerView();
 }
@@ -110,7 +115,7 @@ function updateLiveTime(state) {
   remain.textContent = left === Infinity ? '✨ 不限时畅玩' : overtime ? `⚠️ 已超时 ${formatTime(-left)}` : `剩余 ${formatTime(left)}`;
 }
 
-function toggleCustomerAccessory(accessoryId) { const state = getSeatState(currentSeatId); const selected = new Set(state.selectedAccessories || []); if (selected.has(accessoryId)) selected.delete(accessoryId); else selected.add(accessoryId); updateSeatState(currentSeatId, { selectedAccessories: [...selected] }); renderCustomerView(); }
+function toggleCustomerAccessory(accessoryId) { const state = getSeatState(currentSeatId); const selected = new Set(state.status === 'free' ? selectedCustomerAccessories : (state.selectedAccessories || [])); if (selected.has(accessoryId)) selected.delete(accessoryId); else selected.add(accessoryId); if (state.status === 'free') { selectedCustomerAccessories = [...selected]; renderCustomerView(); } else { updateSeatState(currentSeatId, { selectedAccessories: [...selected] }); renderCustomerView(); } }
 
 function requestExtra() {
   addExtraRequest(currentSeatId);
@@ -119,12 +124,7 @@ function requestExtra() {
 }
 
 let pendingCustomerIronMode = null;
-function openIronForm() {
-  const state = getSeatState(currentSeatId);
-  const modes = getIronModes(); pendingCustomerIronMode = modes[0] || '普通熨烫';
-  const panel = document.getElementById('customer-content');
-  panel.innerHTML += `<div class="inline-form" id="iron-form"><h3>提交熨烫</h3><div class="customer-choice-label">熨烫方式</div><div class="customer-iron-tags">${modes.map((mode, i) => `<button type="button" class="status-tag ${i === 0 ? 'selected' : ''}" onclick="selectCustomerIronMode('${mode}', this)">${mode}</button>`).join('')}</div><label>上传拼豆图片（可选）<input id="iron-image" type="file" accept="image/*"></label><button class="customer-btn" onclick="submitIronRequest()">提交申请</button></div>`;
-}
+function openIronForm() { pendingCustomerIronMode = getIronModes()[0] || '普通熨烫'; customerIronFormOpen = true; renderCustomerView(); }
 function selectCustomerIronMode(mode, button) { pendingCustomerIronMode = mode; document.querySelectorAll('.customer-iron-tags .status-tag').forEach(x => x.classList.remove('selected')); button.classList.add('selected'); }
 
 function compressImage(file) {
@@ -149,7 +149,8 @@ function compressImage(file) {
 
 async function submitIronRequest() {
   const mode = pendingCustomerIronMode || getIronModes()[0] || '普通熨烫';
-  const file = document.getElementById('iron-image').files[0];
+  const imageInput = document.getElementById('iron-image');
+  const file = imageInput?.files?.[0] || null;
   let image = null;
   try { image = await compressImage(file); } catch (_) { return showToast('图片读取失败，请重试'); }
   const request = { mode, image, requestedAt: Date.now() };
@@ -157,6 +158,7 @@ async function submitIronRequest() {
   updateSeatState(currentSeatId, { ironRequestedAt: request.requestedAt, ironMode: mode, ironImage: image, ironDone: false, ironStatus:'pending', needIron: true, lastIronRequestId: queueItem.id });
   saveIronRequest(currentSeatId, request);
   updateTodayStats({ needIron: 1 });
+  customerIronFormOpen = false;
   showToast(`熨烫申请已提交，当前排第 ${getIronQueuePosition(queueItem.id)} 位`);
   renderCustomerView();
 }
