@@ -629,6 +629,23 @@ body {
 .customer-iron-tags .status-tag { padding:8px 11px; }
 
 .checkout-total { padding:12px; background:#fff3f8; border-radius:10px; color:#d72c7b; font-weight:700; text-align:center; }
+.checkout-accessory-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; }
+.checkout-accessory-tag { display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:7px; padding:8px; border:1px solid #efd1e0; border-radius:10px; background:#fff9fc; cursor:pointer; }
+.checkout-accessory-tag.selected { border-color:#d72c7b; background:#ffe8f2; box-shadow:0 0 0 2px rgba(215,44,123,.1); }
+.checkout-accessory-tag img, .checkout-accessory-placeholder { width:42px; height:42px; object-fit:cover; border-radius:7px; background:#ffe2ef; display:flex; align-items:center; justify-content:center; color:#c85c86; font-size:10px; }
+.checkout-accessory-info { min-width:0; display:grid; gap:3px; text-align:left; }
+.checkout-accessory-info b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#633f50; font-size:11px; }
+.checkout-accessory-info span { color:#a56a83; font-size:10px; }
+.checkout-qty { display:flex; align-items:center; gap:4px; }
+.checkout-qty button { width:22px; height:22px; border:1px solid #e6b4c9; border-radius:6px; background:#fff; color:#c52c78; cursor:pointer; }
+.checkout-qty strong { min-width:14px; text-align:center; color:#633f50; font-size:11px; }
+.receipt-checkout-head { display:flex; justify-content:space-between; gap:10px; padding:10px 0; color:#754a60; font-size:12px; border-bottom:1px dashed #ead5df; }
+.checkout-line { display:flex; justify-content:space-between; align-items:center; padding:8px 0; color:#765468; font-size:12px; }
+.checkout-line strong { color:#c52c78; }
+.checkout-accessory-subtotal { border-top:1px dashed #ead5df; }
+.checkout-grand-line { margin-top:4px; padding:12px 10px; border-radius:9px; background:#fff0f6; font-weight:700; }
+.checkout-hint { margin:0 0 8px; color:#aa8294; font-size:10px; }
+@media (max-width:520px) { .checkout-accessory-grid { grid-template-columns:1fr; } }
 .accessory-checks { display:grid; gap:8px; }
 .accessory-row { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:8px; padding:10px; background:#fff8fc; border-radius:9px; font-size:13px; }
 .accessory-row em { color:#a56a83; font-size:11px; font-style:normal; }
