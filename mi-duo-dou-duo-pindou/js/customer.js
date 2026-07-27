@@ -49,7 +49,7 @@ function renderCustomerView() {
     container.innerHTML = `<section class="customer-seat-info"><div class="customer-seat-number">${currentSeatId}</div><div class="customer-package">本单已完成</div><p class="muted">座位已清空，请重新选择套餐开台。</p></section>`;
     return;
   }
-  const pkg = PACKAGES.find(p => p.id === state.packageId);
+  const pkg = getPackages().find(p => p.id === state.packageId);
   const remaining = getRemainingMs(state);
   const overtime = isOvertime(state);
   const request = getExtraRequests()[currentSeatId];
@@ -72,7 +72,7 @@ function renderCustomerView() {
 }
 
 function renderCustomerPackages() {
-  return PACKAGES.filter(p => p.capacity === (selectedCustomerCapacity === 1 ? 1 : 2)).map(p => `<button class="customer-package-btn" data-package="${p.id}" onclick="selectCustomerPackage('${p.id}', this)"><b>${p.name}</b><span>¥${p.price.toFixed(1)} · ${p.duration ? p.duration + '分钟' : '不限时'}</span></button>`).join('');
+  return getPackages().filter(p => p.capacity === (selectedCustomerCapacity === 1 ? 1 : 2)).map(p => `<button class="customer-package-btn" data-package="${p.id}" onclick="selectCustomerPackage('${p.id}', this)"><b>${p.name}</b><span>¥${p.price.toFixed(1)} · ${p.duration ? p.duration + '分钟' : '不限时'}</span></button>`).join('');
 }
 function selectCustomerCapacity(size, button) { selectedCustomerCapacity = size; selectedCustomerPackage = null; selectedCustomerSecondSeat = null; selectedCustomerSeatIds = []; document.querySelectorAll('.party-btn').forEach(x => x.classList.remove('selected')); if (button) button.classList.add('selected'); const second = document.getElementById('customer-second-seat'); if (second) second.style.display = size > 1 ? '' : 'none'; const list = document.querySelector('.customer-package-list'); if (list) list.innerHTML = renderCustomerPackages(); }
 function toggleCustomerSeat(seatId, checkbox) { if (checkbox.checked) selectedCustomerSeatIds.push(seatId); else selectedCustomerSeatIds = selectedCustomerSeatIds.filter(id => id !== seatId); selectedCustomerSecondSeat = selectedCustomerSeatIds[0] || null; }

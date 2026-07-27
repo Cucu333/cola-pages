@@ -266,6 +266,8 @@ body {
 .order-status-fields select { width:100%; margin-top:4px; padding:7px 4px; border:1px solid #efd1e0; border-radius:7px; background:#fff; }
 .additional-seat-select { max-height:150px; overflow:auto; padding:10px; margin:8px 0; background:#fff8fc; border-radius:9px; font-size:12px; }
 .additional-seat-select span { display:block; color:#a34b77; margin-bottom:6px; }
+.seat-selection-summary { margin:9px 0; padding:8px 10px; border-radius:8px; background:#fff5d8; color:#9a6a00; font-size:11px; text-align:center; }
+.seat-selection-summary.ready { background:#eaf8ed; color:#3c8554; }
 .additional-seat-select label { display:inline-block; margin:4px 8px 4px 0; }
 .order-label { display:block; font-size:9px; color:#9a6b82; background:#fff5fa; border-radius:8px; padding:2px 5px; margin:2px auto; }
 .party-picker { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin:12px 0; color:#777; font-size:12px; }
@@ -681,7 +683,7 @@ body {
 .seat-card.overtime .seat-timer { color:#e33e4b; }
 .seat-package { position:static; max-width:100%; font-size:10px; color:#6e5561; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; }
 .seat-times { position:static; display:flex; justify-content:center; gap:5px; flex-wrap:wrap; color:#9d8a94; font-size:8px; line-height:1.35; } .seat-times span:last-child { color:#8e6d7c; font-weight:600; }
-.seat-related { right:7px; bottom:32px; font-size:8px; color:#a05b7a; }
+.seat-related { right:7px; bottom:7px; max-width:48%; padding:3px 5px; border-radius:7px; background:#fff5fa; font-size:9px; color:#a05b7a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .choice-rows, .status-tag-editor { display:grid; gap:8px; margin:12px 0; padding:11px; background:#fff8fb; border:1px solid #f5deea; border-radius:10px; }
 .choice-row { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
 .choice-row > span { width:42px; color:#9b7888; font-size:11px; font-weight:700; }
@@ -779,6 +781,10 @@ body {
 .queue-group { margin-top:14px; }
 .queue-group h4 { margin:0 0 7px; color:#805468; font-size:13px; }
 .queue-group + .queue-group { border-top:1px dashed #efd7e2; padding-top:12px; }
+.custom-package-row { display:grid; grid-template-columns:minmax(100px,1.5fr) 78px 72px 82px 34px; gap:6px; align-items:center; margin:7px 0; }
+.custom-package-row input, .custom-package-row select { min-width:0; padding:8px 6px; border:1px solid #efd1e0; border-radius:8px; background:#fff; font-size:11px; }
+.receipt-logo { display:block; width:62px; height:62px; object-fit:contain; margin:0 auto 8px; border-radius:12px; }
+@media (max-width:520px) { .custom-package-row { grid-template-columns:minmax(90px,1fr) 62px 62px 70px 28px; gap:4px; } }
 
 /* ===== 今日小票：按参考图重排 ===== */
 .modal-subtitle { margin-top:3px; color:#a78d98; font-size:10px; }
@@ -798,6 +804,10 @@ body {
 .ledger-order-main span { color:#6d5962; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ledger-order-main small { color:#aa979f; font-size:10px; }
 .ledger-order > strong { color:#4f914e; font-size:13px; white-space:nowrap; }
+.ledger-order-actions { display:flex; align-items:center; gap:5px; }
+.ledger-amount-input { width:70px; padding:5px; border:1px solid #efd1e0; border-radius:6px; color:#4f914e; font-weight:700; text-align:right; }
+.ledger-delete { border:0; border-radius:6px; padding:5px 6px; background:#fff0f0; color:#c53f43; cursor:pointer; }
+.ledger-actions { display:flex; justify-content:flex-end; gap:12px; }
 .ledger-channel { color:#74636b; font-size:12px; padding:4px 0; }
 .ledger-channel strong { color:#4f914e; }
 .ledger-grand { margin-top:8px; padding-top:10px; border-top:2px solid #4d4448; color:#332e31; font-size:14px; font-weight:700; }

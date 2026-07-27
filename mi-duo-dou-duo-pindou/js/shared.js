@@ -16,6 +16,10 @@ const PACKAGES = [
   { id: 'double_unlimited', name: '双人不限时', duration: 0,    price: 59.9, capacity: 2 },
 ];
 
+function getCustomPackages() { return storageGet('custom_packages') || []; }
+function saveCustomPackages(items) { storageSet('custom_packages', items.filter(x => x && x.name && Number(x.price) >= 0 && Number(x.duration) >= 0).map(x => ({ id:x.id || `custom_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, name:String(x.name), duration:Number(x.duration), price:Number(x.price), capacity:Number(x.capacity) === 1 ? 1 : 2 }))); }
+function getPackages() { return PACKAGES.concat(getCustomPackages()); }
+
 // 加时规则可在设置中调整，旧数据仍兼容默认规则。
 const DEFAULT_EXTRA_RULES = { options: [{ minutes: 15, price: 3 }, { minutes: 30, price: 6 }, { minutes: 60, price: 12 }], rate: 0.2 };
 function getExtraRules() { return storageGet('extra_rules') || { ...DEFAULT_EXTRA_RULES, options: DEFAULT_EXTRA_RULES.options.map(x => ({ ...x })) }; }
@@ -29,7 +33,7 @@ const DEFAULT_ACCESSORIES = [
   { id: 'magnet', name: '冰箱贴配件', price: 2, stock: 80, image: '' }
 ];
 const DEFAULT_IRON_MODES = ['普通熨烫', '快速熨烫', '分色熨烫'];
-const ORDER_ANIMALS = ['🐰', '🐱', '🐻', '🐼', '🐸', '🦊'];
+const ORDER_ANIMALS = ['🐶', '🦮', '🐕', '🐩', '🐕‍🦺', '🦴'];
 const ORDER_COLORS = ['#ff8fba', '#8db8ff', '#a9d99a', '#c3a6ef', '#ffbd75', '#75cfd0'];
 const ORDER_BORDER_STYLES = ['solid', 'dashed', 'double'];
 function pickOrderColor() { return ORDER_COLORS[Math.floor(Math.random() * ORDER_COLORS.length)]; }
@@ -235,7 +239,7 @@ function formatTime(ms) {
 
 // 计算座位金额
 function calculateAmount(state) {
-  const pkg = PACKAGES.find(p => p.id === state.packageId);
+  const pkg = getPackages().find(p => p.id === state.packageId);
   if (!pkg) return 0;
   let amount = pkg.price;
   // 加时费用
@@ -247,7 +251,7 @@ function calculateAmount(state) {
 
 // 计算剩余时间(ms)，不限时返回 Infinity
 function getExpectedEndTime(state) {
-  const pkg = PACKAGES.find(p => p.id === state.packageId);
+  const pkg = getPackages().find(p => p.id === state.packageId);
   if (!state.startTime || !pkg || pkg.duration === 0) return null;
   return state.startTime + (pkg.duration + (state.extraMinutes || 0)) * 60 * 1000 + (state.pausedDuration || 0);
 }
@@ -255,7 +259,7 @@ function getExpectedEndTime(state) {
 function formatExpectedEnd(state) { const end = getExpectedEndTime(state); return end ? new Date(end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '不限时'; }
 
 function getRemainingMs(state) {
-  const pkg = PACKAGES.find(p => p.id === state.packageId);
+  const pkg = getPackages().find(p => p.id === state.packageId);
   if (!pkg || pkg.duration === 0) return Infinity;
   const totalMs = (pkg.duration + state.extraMinutes) * 60 * 1000;
   const elapsed = getElapsedMs(state);
