@@ -18,7 +18,9 @@ const PACKAGES = [
 
 function getCustomPackages() { return storageGet('custom_packages') || []; }
 function saveCustomPackages(items) { storageSet('custom_packages', items.filter(x => x && x.name && Number(x.price) >= 0 && Number(x.duration) >= 0).map(x => ({ id:x.id || `custom_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, name:String(x.name), duration:Number(x.duration), price:Number(x.price), capacity:Number(x.capacity) === 1 ? 1 : 2 }))); }
-function getPackages() { return PACKAGES.concat(getCustomPackages()); }
+function getPackageOverrides() { return storageGet('package_overrides') || {}; }
+function savePackageOverrides(items) { const overrides = {}; items.filter(x => x && x.id && x.name && Number(x.price) >= 0 && Number(x.duration) >= 0).forEach(x => { overrides[x.id] = { name:String(x.name), duration:Number(x.duration), price:Number(x.price), capacity:Number(x.capacity) === 1 ? 1 : 2 }; }); storageSet('package_overrides', overrides); }
+function getPackages() { const overrides = getPackageOverrides(); return PACKAGES.concat(getCustomPackages()).map(item => overrides[item.id] ? { ...item, ...overrides[item.id] } : item); }
 
 // 加时规则可在设置中调整，旧数据仍兼容默认规则。
 const DEFAULT_EXTRA_RULES = { options: [{ minutes: 15, price: 3 }, { minutes: 30, price: 6 }, { minutes: 60, price: 12 }], rate: 0.2 };

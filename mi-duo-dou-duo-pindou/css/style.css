@@ -58,7 +58,7 @@ body {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -781,7 +781,9 @@ body {
 .queue-group { margin-top:14px; }
 .queue-group h4 { margin:0 0 7px; color:#805468; font-size:13px; }
 .queue-group + .queue-group { border-top:1px dashed #efd7e2; padding-top:12px; }
-.custom-package-row { display:grid; grid-template-columns:minmax(100px,1.5fr) 78px 72px 82px 34px; gap:6px; align-items:center; margin:7px 0; }
+.package-setting-head, .custom-package-row { display:grid; grid-template-columns:minmax(100px,1.5fr) 78px 72px 82px 34px; gap:6px; align-items:center; margin:7px 0; }
+.package-setting-head { color:#a16b84; font-size:10px; text-align:center; }
+.package-fixed { color:#b38b9e; font-size:10px; text-align:center; }
 .custom-package-row input, .custom-package-row select { min-width:0; padding:8px 6px; border:1px solid #efd1e0; border-radius:8px; background:#fff; font-size:11px; }
 .receipt-logo { display:block; width:100px; height:54px; object-fit:cover; object-position:center top; margin:0 auto 8px; border-radius:10px; }
 @media (max-width:520px) { .custom-package-row { grid-template-columns:minmax(90px,1fr) 62px 62px 70px 28px; gap:4px; } }
