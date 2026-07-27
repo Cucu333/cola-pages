@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>咪哆豆多拼豆馆 - 我的座位</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/app-icon.svg">
+  <meta name="theme-color" content="#d72c7b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="咪哆豆多拼豆馆">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- 顶部 Header -->
+  <div class="header">
+    <h1>🐱 咪哆豆多拼豆馆 🎀</h1>
+    <div class="decoration">我的座位</div>
+  </div>
+
+  <!-- 顾客内容区 -->
+  <div class="customer-wifi-card" aria-label="店铺 Wi-Fi 信息"><span class="customer-wifi-icon">📶</span><div><strong>店内 Wi-Fi</strong><span>账号：咪哆豆多拼豆馆</span><span>密码：18834338464</span></div></div>
+
+  <div class="customer-container" id="customer-content">
+    <div style="text-align:center; padding:60px 20px;">
+      <div style="font-size:32px;">⏳</div>
+      <div style="margin-top:12px; color:#999;">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 脚本加载 -->
+  <script src="js/supabase-config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/customer.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

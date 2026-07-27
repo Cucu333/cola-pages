@@ -1,0 +1,15 @@
+{
+  "name": "咪哆豆多拼豆馆管理系统",
+  "short_name": "咪哆豆多拼豆馆",
+  "start_url": "./index.html",
+  "description": "咪哆豆多拼豆馆座位、计时、熨烫和收款管理",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff7fb",
+  "theme_color": "#d72c7b",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "./icons/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

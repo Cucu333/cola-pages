@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>咪哆豆多拼豆馆 - 管理系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/app-icon.svg">
+  <meta name="theme-color" content="#d72c7b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="咪哆豆多拼豆馆">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- 顶部 Header -->
+  <div class="header">
+    <h1>🐱 咪哆豆多拼豆馆 🎀</h1>
+    <div class="header-actions">
+      <div class="revenue-highlight"><small>今日营收</small><strong id="header-revenue">¥0.00</strong></div>
+      <div class="revenue-highlight accessory-revenue"><small>饰品销售</small><strong id="header-accessory-sales">¥0.00</strong></div>
+      <button class="sync-status sync-checking" id="sync-status" onclick="retrySupabaseSync()">同步检查中</button>
+      <button class="header-btn" onclick="showIronQueue()">🔥 熨烫队列</button>
+      <button class="header-btn" onclick="openSettings()">⚙️ 设置</button>
+      <button class="header-btn" onclick="showLedger()">🧾 今日小票</button>
+    </div>
+  </div>
+
+  <!-- 对账统计面板 -->
+  <div class="stats-panel">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-value" id="stat-people">0</div><div class="stat-label">今日总人数</div></div>
+      <div class="stat-item"><div class="stat-value" id="stat-orders">0</div><div class="stat-label">今日总订单</div></div>
+      <div class="stat-item"><div class="stat-value" id="stat-overtime">0</div><div class="stat-label">超时 / 加时</div></div>
+      <div class="stat-item"><div class="stat-value" id="stat-iron-queue">0</div><div class="stat-label">熨烫队列</div></div>
+      <div class="stat-item"><div class="stat-value" id="stat-iron-done">0</div><div class="stat-label">熨烫完成</div></div>
+      <div class="stat-item"><div class="stat-value" id="stat-low-stock">0</div><div class="stat-label">库存预警</div></div>
+    </div>
+  </div>
+
+  <section class="action-summary" id="action-summary"></section>
+
+  <!-- 区域切换标签 -->
+  <div class="zone-tabs">
+    <button class="zone-tab active" data-zone="A">A区（25座）</button>
+    <button class="zone-tab" data-zone="B">B区（28座）</button>
+  </div>
+
+  <!-- 状态图例 -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot free"></span>空闲</div>
+    <div class="legend-item"><span class="legend-dot occupied"></span>占用</div>
+    <div class="legend-item"><span class="legend-dot paused"></span>暂停</div>
+  </div>
+
+  <!-- 座位网格 -->
+  <div class="seats-grid" id="seats-grid"></div>
+  <div class="ledger-summary" id="ledger-summary"></div>
+
+  <!-- 底部弹出面板 -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-panel" id="modal-panel"></div>
+  </div>
+
+  <!-- 脚本加载 -->
+  <script src="js/supabase-config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>
