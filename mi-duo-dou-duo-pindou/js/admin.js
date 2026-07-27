@@ -40,7 +40,7 @@ function renderStats() {
   set('stat-orders', s.orders ?? s.arrivals ?? 0);
   const overtimeCount = Number(s.overtime || 0) + liveOvertime;
   const extraCount = Object.keys(getExtraRequests()).length;
-  set('stat-overtime', `${overtimeCount}/${extraCount}`);
+  set('stat-overtime', `${extraCount}/${overtimeCount}`);
   set('stat-iron-queue', `${pendingIronCount}/${doneIronCount}`);
   const todayLedger = getTodayLedger();
   const accessorySales = todayLedger.reduce((sum, entry) => sum + (entry.receipt?.accessories || []).reduce((n, item) => n + Number(item.price || 0), 0), 0);
