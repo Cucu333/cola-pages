@@ -16,7 +16,7 @@ const PACKAGES = [
   { id: 'double_unlimited', name: '双人不限时', duration: 0,    price: 59.9, capacity: 2 },
 ];
 
-const RECEIPT_FONT_PRESETS = { round:'软糖圆体', hand:'手写甜甜体', mono:'手帐票据体' };
+const RECEIPT_FONT_PRESETS = { round:'软糖圆体', hand:'手写甜甜体', mono:'手帐票据体', xiao:'小薇可爱体', mao:'毛笔俏皮体', long:'龙苍手写体' };
 function getReceiptFont() { return storageGet('receipt_font') || 'round'; }
 function saveReceiptFont(font) { storageSet('receipt_font', RECEIPT_FONT_PRESETS[font] ? font : 'round'); }
 function getCustomPackages() { return storageGet('custom_packages') || []; }
@@ -313,6 +313,7 @@ function getSeatIronQueue(seatId) { return getIronQueue().filter(item => item.se
 function getIronQueuePosition(id) { const pending = getIronQueue().filter(item => item.status !== 'done').sort((a,b) => a.requestedAt - b.requestedAt); const index = pending.findIndex(item => item.id === id); return index < 0 ? null : index + 1; }
 function saveIronRequest(seatId, request) { const requests = getIronRequests(); requests[seatId] = request; storageSet('iron_requests', requests); }
 function clearIronRequest(seatId) { const requests = getIronRequests(); delete requests[seatId]; storageSet('iron_requests', requests); }
+function clearIronQueueForSeat(seatId) { saveIronQueue(getIronQueue().filter(item => item.seatId !== seatId)); clearIronRequest(seatId); }
 function getUnfinishedWorks() { const raw = storageGet('unfinished_works') || []; if (Array.isArray(raw)) return raw; return Object.values(raw); }
 function saveUnfinishedWork(id, work) { const works = getUnfinishedWorks().filter(x => x.id !== id); works.push({ id, image:work.image || null, phoneTail:work.phoneTail || '', savedAt:work.savedAt || Date.now(), packageName:work.packageName || '', status:work.status || 'pending' }); storageSet('unfinished_works', works); }
 function clearUnfinishedWork(id) { storageSet('unfinished_works', getUnfinishedWorks().filter(x => x.id !== id)); }

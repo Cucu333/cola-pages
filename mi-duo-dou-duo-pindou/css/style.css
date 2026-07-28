@@ -1,5 +1,5 @@
 /* Cute Chinese fonts used by receipt previews and printed receipts. */
-@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Long+Cang&family=Liu+Jian+Mao+Cao&family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&display=swap');
 
 /* ========================================
    咪哆豆多拼豆馆管理系统 - 全局样式
@@ -863,6 +863,9 @@ body {
 .receipt-font-round, .font-round { font-family:'ZCOOL KuaiLe','Microsoft YaHei',sans-serif; }
 .receipt-font-hand, .font-hand { font-family:'Ma Shan Zheng','KaiTi','Microsoft YaHei',sans-serif; }
 .receipt-font-mono, .font-mono { font-family:'ZCOOL QingKe HuangYou','ZCOOL KuaiLe','Microsoft YaHei',sans-serif; }
+.receipt-font-xiao, .font-xiao { font-family:'ZCOOL XiaoWei','ZCOOL KuaiLe','Microsoft YaHei',sans-serif; }
+.receipt-font-mao, .font-mao { font-family:'Liu Jian Mao Cao','Ma Shan Zheng','Microsoft YaHei',sans-serif; }
+.receipt-font-long, .font-long { font-family:'Long Cang','Ma Shan Zheng','Microsoft YaHei',sans-serif; }
 .font-preview { display:block; line-height:1.35; }
 .font-preview small { display:block; margin-top:2px; color:#b77d93; font:inherit; font-size:11px; }
 .font-preset-list { display:grid; gap:9px; }

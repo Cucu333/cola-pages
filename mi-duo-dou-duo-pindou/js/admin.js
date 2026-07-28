@@ -159,7 +159,7 @@ function startSeat() {
   const seats = selectedSeatIds.length ? selectedSeatIds : [selectedSeat];
   const orderId = `${seats.join('+')}-order_${Date.now()}`;
   const shared = { status:'occupied', packageId:selectedPackageId, orderId, orderAnimal:pickOrderAnimal(), orderColor:pickOrderColor(), orderBorderStyle:pickOrderBorderStyle(), partySize:selectedPartySize, orderSeatIds:seats, arrivalType:source, paymentStatus:source === '到店' ? status : '未付款', couponStatus:source === '团购' ? status : '未核销', isCoupon:source === '团购', startTime:Date.now(), pauseTime:null, pausedDuration:0, extraMinutes:0, needIron:false, ironDone:false, ironRequestedAt:null, ironImage:null, ironMode:null, selectedAccessories:[] };
-  seats.forEach(id => updateSeatState(id, { ...shared, seatId:id }));
+  seats.forEach(id => { clearIronQueueForSeat(id); updateSeatState(id, { ...shared, seatId:id }); });
   updateTodayStats({ arrivals:1, people:selectedPartySize, orders:1, couponUsed:source === '团购' ? 1 : 0 });
   selectedPackageId = null; selectedPartySize = 1; selectedSeatIds = []; closePanel(); refreshAll(); showToast('已开台');
 }
