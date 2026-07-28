@@ -87,10 +87,7 @@ function renderSeats() {
     const orderSeats = state.orderSeatIds && state.orderSeatIds.length > 1 ? state.orderSeatIds.join('+') : '';
     const animal = busy ? (state.partySize > 1 ? `${state.orderAnimal || '🐰'}${state.orderAnimal || '🐰'}` : (state.orderAnimal || '🐰')) : '';
     const start = busy && state.startTime ? new Date(state.startTime).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }) : '--:--';
-    const ironItems = busy ? getSeatIronQueue(seat.id) : [];
-    const ironPending = ironItems.some(item => item.status !== 'done');
-    const workBadge = '';
-    const quickActions = busy ? `<div class="seat-quick-actions"><button onclick="quickSeatAction(event, '${seat.id}', 'pause')">${state.status === 'paused' ? '▶ 继续' : 'Ⅱ 暂停'}</button>${ironPending ? `<button class="active" onclick="quickSeatAction(event, '${seat.id}', 'iron')">🔥 待熨提醒</button>` : ''}</div>` : '';
+    const quickActions = busy ? `<div class="seat-quick-actions"><button onclick="quickSeatAction(event, '${seat.id}', 'pause')">${state.status === 'paused' ? '▶ 继续' : 'Ⅱ 暂停'}</button></div>` : '';
     return `<article class="seat-card ${state.status} ${!orderSeats ? 'single-seat-card' : ''} ${overtime ? 'overtime' : ''}" ${color} data-seat-id="${seat.id}" onclick="openSeatPanel('${seat.id}')">
       ${busy ? `<div class="seat-package-top">${pkg ? pkg.name : '当前套餐'}</div><div class="seat-topline"><span class="seat-status-badge ${statusClass}">${state.arrivalType || '到店'} · ${statusValue} · ¥${Number(pkg?.price || 0).toFixed(1)}</span></div>` : ''}
       <div class="seat-animals">${animal}</div>
