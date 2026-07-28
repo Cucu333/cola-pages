@@ -951,7 +951,14 @@ body {
 @media (min-width:900px) { .seats-grid { grid-template-columns:repeat(6, minmax(145px, 1fr)); } }
 @media (min-width:1200px) { .seats-grid { grid-template-columns:repeat(7, minmax(145px, 1fr)); } }
 @media (max-width:699px) { .seats-grid { grid-template-columns:repeat(4, minmax(0, 1fr)); padding:8px; gap:8px; } }
-@media (max-width:520px) { .seats-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .seat-card { min-height:184px; } .seat-quick-actions button { font-size:9px; } }
+@media (max-width:520px) { .modal-panel { width:calc(100vw - 20px); max-height:calc(100vh - 24px); padding:16px; border-radius:12px; } .seats-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .seat-card { min-height:184px; } .seat-quick-actions button { font-size:9px; } }
+.modal-panel { top:50% !important; left:50% !important; right:auto !important; bottom:auto !important; width:min(900px, calc(100vw - 28px)); max-height:calc(100vh - 32px); overflow-y:auto; overscroll-behavior:contain; transform:translate(-50%, -50%) !important; }
+.saved-image-item { display:grid; grid-template-columns:28px 64px minmax(0,1fr); align-items:center; gap:9px; padding:8px; border:1px solid #f0d6e1; border-radius:9px; background:#fff8fb; }
+.saved-image-number { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:#ffe2ef; color:#b02f67; font-size:12px; }
+.saved-image-item img { width:64px; height:64px; object-fit:cover; border-radius:7px; background:#f7eef2; }
+.saved-image-item div { min-width:0; display:grid; gap:3px; }
+.saved-image-item strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#74445a; font-size:12px; }
+.saved-image-item small { color:#aa929d; font-size:10px; }
 .work-dot { position:absolute; border:0; background:transparent; color:#e39a19; font-size:18px; line-height:1; padding:2px 4px; cursor:pointer; z-index:6; }
 .seat-card > .work-dot { right:6px; top:32px; }
 .customer-work-dot { position:relative; display:inline-grid; place-items:center; width:26px; height:26px; margin:0 auto; color:#e39a19; vertical-align:middle; }
