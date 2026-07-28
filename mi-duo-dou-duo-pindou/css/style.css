@@ -952,6 +952,14 @@ body {
 @media (min-width:1200px) { .seats-grid { grid-template-columns:repeat(7, minmax(145px, 1fr)); } }
 @media (max-width:699px) { .seats-grid { grid-template-columns:repeat(4, minmax(0, 1fr)); padding:8px; gap:8px; } }
 @media (max-width:520px) { .seats-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .seat-card { min-height:184px; } .seat-quick-actions button { font-size:9px; } }
+.work-dot { position:absolute; border:0; background:transparent; color:#e39a19; font-size:18px; line-height:1; padding:2px 4px; cursor:pointer; z-index:6; }
+.seat-card > .work-dot { right:6px; top:32px; }
+.customer-work-dot { position:relative; display:inline-grid; place-items:center; width:26px; height:26px; margin:0 auto; color:#e39a19; vertical-align:middle; }
+.customer-work-dot.work-dot-empty { color:#e7d8c0; }
+.unfinished-iron-item { background:#fffaf0; border-color:#eed8b3; }
+.unfinished-iron-item .iron-item-main strong { color:#a16a00; }
+.unfinished-iron-item .iron-item-main span { color:#895f18; font-weight:700; }
+.unfinished-iron-item button { background:#ffe3a8; color:#895f18; }
 
 /* ===== 视觉收口：统一字阶、字重与紧凑间距 ===== */
 :root { --ink:#5b414d; --ink-soft:#8c7580; --muted:#a9929d; --line:#efd1e0; --pink:#d72c7b; --pink-soft:#fff4f8; }
