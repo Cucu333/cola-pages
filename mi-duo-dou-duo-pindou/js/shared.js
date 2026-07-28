@@ -307,15 +307,15 @@ function getIronRequests() { return storageGet('iron_requests') || {}; }
 function isToday(timestamp) { return timestamp && new Date(timestamp).toLocaleDateString() === new Date().toLocaleDateString(); }
 function getIronQueue() { const items = storageGet('iron_queue') || []; const fresh = items.filter(item => isToday(item.requestedAt)); if (fresh.length !== items.length) storageSet('iron_queue', fresh); return fresh; }
 function saveIronQueue(items) { storageSet('iron_queue', items.filter(item => isToday(item.requestedAt))); }
-function addIronQueueRequest(seatId, request) { const items = getIronQueue(); const item = { id:`iron_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, seatId, mode:request.mode, image:request.image || null, requestedAt:request.requestedAt || Date.now(), status:'pending', completedAt:null, confirmedAt:null, processingAt:null }; items.push(item); saveIronQueue(items); return item; }
+function addIronQueueRequest(seatId, request) { const items = getIronQueue(); const item = { id:`iron_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, seatId, mode:request.mode, image:request.image || null, accessories:request.accessories || [], requestedAt:request.requestedAt || Date.now(), status:'pending', completedAt:null, confirmedAt:null, processingAt:null }; items.push(item); saveIronQueue(items); return item; }
 function updateIronQueueRequest(id, updates) { const items = getIronQueue().map(item => item.id === id ? { ...item, ...updates } : item); saveIronQueue(items); return items.find(item => item.id === id); }
 function getSeatIronQueue(seatId) { return getIronQueue().filter(item => item.seatId === seatId).sort((a,b) => a.requestedAt - b.requestedAt); }
 function getIronQueuePosition(id) { const pending = getIronQueue().filter(item => item.status !== 'done').sort((a,b) => a.requestedAt - b.requestedAt); const index = pending.findIndex(item => item.id === id); return index < 0 ? null : index + 1; }
 function saveIronRequest(seatId, request) { const requests = getIronRequests(); requests[seatId] = request; storageSet('iron_requests', requests); }
 function clearIronRequest(seatId) { const requests = getIronRequests(); delete requests[seatId]; storageSet('iron_requests', requests); }
-function getUnfinishedWorks() { return storageGet('unfinished_works') || {}; }
-function saveUnfinishedWork(seatId, work) { const works = getUnfinishedWorks(); works[seatId] = { seatId, image:work.image || null, savedAt:work.savedAt || Date.now(), packageName:work.packageName || '' }; storageSet('unfinished_works', works); }
-function clearUnfinishedWork(seatId) { const works = getUnfinishedWorks(); delete works[seatId]; storageSet('unfinished_works', works); }
+function getUnfinishedWorks() { const raw = storageGet('unfinished_works') || []; if (Array.isArray(raw)) return raw; return Object.values(raw); }
+function saveUnfinishedWork(id, work) { const works = getUnfinishedWorks().filter(x => x.id !== id); works.push({ id, image:work.image || null, phoneTail:work.phoneTail || '', savedAt:work.savedAt || Date.now(), packageName:work.packageName || '', status:work.status || 'pending' }); storageSet('unfinished_works', works); }
+function clearUnfinishedWork(id) { storageSet('unfinished_works', getUnfinishedWorks().filter(x => x.id !== id)); }
 
 function getLedger() { return storageGet('ledger') || []; }
 function getTodayLedger() { const today = new Date().toLocaleDateString(); return getLedger().filter(entry => new Date(entry.createdAt).toLocaleDateString() === today); }

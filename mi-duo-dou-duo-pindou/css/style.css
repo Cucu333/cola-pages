@@ -972,8 +972,21 @@ body {
 .pending-card-list strong { min-width:50px; color:#d72c7b; font-size:16px; }
 .pending-card-list span { font-size:12px; font-weight:600; }
 .action-summary { display:none; }
-.accessory-table-head, .setting-row { grid-template-columns:28px minmax(96px,1fr) 56px 56px 56px 78px 24px; }
-@media (max-width:520px) { .accessory-table-head, .setting-row { grid-template-columns:24px minmax(64px,1fr) 40px 40px 40px 48px 20px; } .setting-row input[type=file] { grid-column:6; } .setting-row .remove-btn { grid-column:7; } }
+.pending-panel { min-width:0; }
+.pending-panel-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.pending-panel-head h3 { margin:0; }
+.pending-tabs { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:6px; margin-bottom:12px; }
+.pending-tab { min-height:38px; border:1px solid #efd5df; border-radius:9px; background:#fff8fb; color:#815166; font-size:11px; font-weight:700; cursor:pointer; }
+.pending-tab.active { background:#ffe3ef; border-color:#e98bad; color:#bd2e6d; }
+.pending-tab b { margin-left:3px; color:#d64b78; }
+.pending-inline-list { display:grid; gap:8px; }
+.row-edit-btn { min-width:38px; padding:5px 7px; font-size:10px; }
+.setting-row .remove-btn:disabled, .extra-rule-row .remove-btn:disabled, .custom-package-row .remove-btn:disabled { opacity:.35; cursor:not-allowed; }
+.extra-rule-row, .custom-package-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px 28px; align-items:center; gap:6px; margin-bottom:7px; }
+.custom-package-row { grid-template-columns:minmax(0,1.5fr) 58px 58px 78px 44px 28px; }
+.admin-work-phone { width:100%; box-sizing:border-box; margin:10px 0; padding:10px; border:1px solid #e9d4de; border-radius:8px; }
+.accessory-table-head, .setting-row { grid-template-columns:28px minmax(96px,1fr) 56px 56px 56px 78px 44px 24px; }
+@media (max-width:520px) { .accessory-table-head, .setting-row { grid-template-columns:24px minmax(64px,1fr) 40px 40px 40px 48px 40px 20px; } .setting-row input[type=file] { grid-column:6; } .setting-row .row-edit-btn { grid-column:7; } .setting-row .remove-btn { grid-column:8; } }
 .work-dot { position:absolute; border:0; background:transparent; color:#e39a19; font-size:18px; line-height:1; padding:2px 4px; cursor:pointer; z-index:6; }
 .seat-card > .work-dot { right:6px; top:32px; }
 .customer-work-dot { position:relative; display:inline-grid; place-items:center; width:26px; height:26px; margin:0 auto; color:#e39a19; vertical-align:middle; }
