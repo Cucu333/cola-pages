@@ -23,7 +23,7 @@
       <div class="revenue-highlight accessory-revenue"><small>饰品销售</small><strong id="header-accessory-sales">¥0.00</strong></div>
       <button class="sync-status sync-checking" id="sync-status" onclick="retrySupabaseSync()">同步检查中</button>
       <button class="header-btn" onclick="showIronQueue()">🔥 熨烫队列</button>
-      <button class="header-btn" onclick="openSettings()">⚙️ 设置</button>
+      <button class="header-btn settings-header-btn" onclick="openSettings()">⚙️ 设置<span id="inventory-alert-badge" class="header-alert-badge" hidden>0</span></button>
       <button class="header-btn" onclick="showLedger()">🧾 今日小票</button>
     </div>
   </div>
@@ -33,9 +33,9 @@
     <div class="stats-grid">
       <div class="stat-item"><div class="stat-value" id="stat-people">0</div><div class="stat-label">今日总人数</div></div>
       <div class="stat-item"><div class="stat-value" id="stat-orders">0</div><div class="stat-label">今日总订单</div></div>
-      <div class="stat-item"><div class="stat-value" id="stat-overtime">0/0</div><div class="stat-label">申请加时 / 超时订单</div></div>
+      <button class="stat-item stat-clickable" onclick="showOvertimeItems()"><div class="stat-value" id="stat-overtime">0/0</div><div class="stat-label">申请加时 / 超时订单</div></button>
       <div class="stat-item"><div class="stat-value" id="stat-iron-queue">0/0</div><div class="stat-label">熨烫队列（未熨 / 已熨）</div></div>
-      <div class="stat-item"><div class="stat-value" id="stat-low-stock">0</div><div class="stat-label">库存预警</div></div>
+      <button class="stat-item stat-clickable pending-stat-item" onclick="showPendingItems()"><div class="stat-value" id="stat-pending">0</div><div class="stat-label">待处理事项</div></button>
     </div>
   </div>
 
