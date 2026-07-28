@@ -914,6 +914,45 @@ body {
 .ledger-stats .ledger-grand { margin-top:3px; }
 .ledger-actions { text-align:right; margin-top:8px; }
 
+/* ===== 平板与高频座位动作 ===== */
+.seats-grid { width:min(100%, 1280px); margin:0 auto; grid-template-columns:repeat(5, minmax(150px, 1fr)); gap:12px; padding:12px 16px 20px; }
+.seat-card { min-width:0; min-height:190px; padding-bottom:52px; }
+.seat-quick-actions { left:7px; right:7px; bottom:7px; gap:6px; }
+.seat-quick-actions button { flex:1 1 0; min-width:0; height:32px; min-height:32px; padding:0 5px; font-size:10px; }
+.seat-quick-actions button.active { background:#ffe0ed; border-color:#d72c7b; color:#b02f67; }
+.work-alert { position:absolute; left:7px; bottom:39px; max-width:calc(100% - 14px); padding:2px 5px; border-radius:6px; background:#fff0d6; color:#a16a00; font-size:9px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.work-alert-action { border-color:#e9c27b !important; background:#fff7e6 !important; color:#9a6500 !important; }
+.seat-iron-current { display:grid; gap:5px; padding:11px; border:1px solid #f0d6e1; border-radius:9px; background:#fff8fb; color:#805468; }
+.seat-iron-current strong { color:#b02f67; font-size:13px; }
+.seat-iron-current span { font-size:12px; }
+.seat-iron-current small { color:#a9929d; font-size:10px; }
+.paused-countdown { color:#a97800 !important; }
+.unfinished-work-list { display:grid; gap:8px; }
+.unfinished-work-item { display:grid; grid-template-columns:1fr 58px auto; align-items:center; gap:8px; padding:9px; border:1px solid #eed8b3; border-radius:9px; background:#fffaf0; }
+.unfinished-work-item > div { min-width:0; display:grid; gap:3px; }
+.unfinished-work-item strong { color:#895f18; font-size:13px; }
+.unfinished-work-item small { color:#aa8d62; font-size:10px; }
+.unfinished-work-item img, .work-placeholder { width:58px; height:58px; object-fit:cover; border-radius:7px; }
+.work-placeholder { display:grid; place-items:center; background:#f5ead4; color:#aa8d62; font-size:9px; text-align:center; }
+.saved-work-notice, .unfinished-work-card { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; padding:10px; border:1px solid #eed8b3; border-radius:9px; background:#fffaf0; text-align:left; }
+.saved-work-notice > div { min-width:0; display:grid; gap:2px; }
+.saved-work-notice strong, .unfinished-work-card strong { color:#895f18; font-size:12px; }
+.saved-work-notice small { color:#aa8d62; font-size:10px; }
+.saved-work-notice img, .unfinished-work-card img { grid-row:span 2; width:54px; height:54px; object-fit:cover; border-radius:7px; }
+.saved-work-notice .text-btn { grid-column:1 / -1; justify-self:start; }
+.unfinished-work-card { grid-template-columns:1fr auto; margin-top:9px; }
+.unfinished-work-card strong { grid-column:1 / -1; }
+.unfinished-work-form .work-form-actions { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
+@media (min-width:700px) {
+  .modal-panel { width:min(900px, calc(100vw - 44px)); max-height:86vh; padding:22px 24px; }
+  .stats-panel, .iron-queue-section, .action-summary { max-width:1280px; margin-left:auto; margin-right:auto; }
+}
+@media (min-width:700px) and (max-width:899px) { .seats-grid { grid-template-columns:repeat(4, minmax(0, 1fr)); } }
+@media (min-width:900px) { .seats-grid { grid-template-columns:repeat(6, minmax(145px, 1fr)); } }
+@media (min-width:1200px) { .seats-grid { grid-template-columns:repeat(7, minmax(145px, 1fr)); } }
+@media (max-width:699px) { .seats-grid { grid-template-columns:repeat(4, minmax(0, 1fr)); padding:8px; gap:8px; } }
+@media (max-width:520px) { .seats-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .seat-card { min-height:184px; } .seat-quick-actions button { font-size:9px; } }
+
 /* ===== 视觉收口：统一字阶、字重与紧凑间距 ===== */
 :root { --ink:#5b414d; --ink-soft:#8c7580; --muted:#a9929d; --line:#efd1e0; --pink:#d72c7b; --pink-soft:#fff4f8; }
 body { font-size:14px; line-height:1.45; color:var(--ink); }
