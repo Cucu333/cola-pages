@@ -740,7 +740,8 @@ body {
 .settings-nav-item { border:0; border-radius:9px; padding:11px 7px; background:#fff4f8; color:#8c6073; text-align:left; font-size:12px; cursor:pointer; }
 .settings-nav-item.active { background:#d72c7b; color:#fff; }
 .settings-nav-icon { display:none; }
-.settings-detail { min-width:0; }
+.settings-detail { min-width:0; max-height:min(62vh, 560px); overflow-y:auto; overscroll-behavior:contain; padding-right:3px; }
+.settings-layout { min-height:0; }
 .settings-section[hidden] { display:none; }
 .settings-section-head { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:10px; }
 .settings-section-head h4 { margin:0; color:#74445a; }
@@ -816,7 +817,7 @@ body {
 .change-seat-option small { display:block; color:#aa929d; font-size:9px; margin-top:2px; }
 .change-seat-option.selected { background:#ffe0ed; border-color:#d72c7b; color:#b02f67; }
 .extra-rule-head, .extra-rule-row { display:grid; grid-template-columns:1fr 1fr 28px; gap:8px; align-items:center; }
-.extra-rule-head { color:#aa8294; font-size:10px; padding:0 8px 4px; }
+.extra-rule-head { color:#aa8294; font-size:10px; padding:0 8px 4px; } .extra-rule-head span { text-align:left; }
 .extra-rule-row { margin-top:7px; }
 .extra-rule-row input { width:100%; border:1px solid #efd1e0; border-radius:8px; padding:8px; }
 .queue-group { margin-top:14px; }
@@ -1032,7 +1033,7 @@ button { line-height:1.25; }
 .settings-section-head > div { min-width:0; }
 .settings-section-head h4 { font-size:14px; font-weight:700; line-height:1.3; }
 .settings-section-head p { margin-top:2px; font-size:10px; line-height:1.35; }
-.settings-section-head > .text-btn { flex:0 0 auto; padding:6px 8px; font-size:10px; }
+.settings-section-head > .text-btn { flex:0 0 auto; padding:6px 8px; font-size:10px; } .settings-section-head > .settings-edit-btn { flex:0 0 auto; }
 .settings-filter-tabs { gap:5px; margin:8px 0; padding-bottom:6px; }
 .settings-filter-tab { min-height:30px; padding:6px 10px; border-radius:8px; font-size:11px; font-weight:600; line-height:1.2; }
 .status-tag { min-height:29px; padding:5px 9px; font-size:11px; font-weight:600; }
