@@ -16,7 +16,7 @@ const PACKAGES = [
   { id: 'double_unlimited', name: '双人不限时', duration: 0,    price: 59.9, capacity: 2 },
 ];
 
-const RECEIPT_FONT_PRESETS = { round:'圆体', hand:'手写体', mono:'票据体' };
+const RECEIPT_FONT_PRESETS = { round:'软糖圆体', hand:'手写甜甜体', mono:'手帐票据体' };
 function getReceiptFont() { return storageGet('receipt_font') || 'round'; }
 function saveReceiptFont(font) { storageSet('receipt_font', RECEIPT_FONT_PRESETS[font] ? font : 'round'); }
 function getCustomPackages() { return storageGet('custom_packages') || []; }
