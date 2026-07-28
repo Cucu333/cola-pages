@@ -61,7 +61,7 @@ body {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -978,6 +978,8 @@ body {
 .stat-clickable { border:0; cursor:pointer; text-align:center; color:inherit; transition:transform .15s, box-shadow .15s; }
 .stat-clickable:hover, .stat-clickable:active { transform:translateY(-1px); box-shadow:0 3px 9px rgba(130,55,85,.12); }
 .pending-stat-item .stat-value { color:#c52c78; }
+.saved-stat-item .stat-value { color:#9a6b35; }
+.saved-stat-item { background:#fffaf0; }
 .header-alert-badge { display:inline-grid; place-items:center; min-width:17px; height:17px; margin-left:4px; padding:0 4px; border-radius:9px; background:#e34a57; color:#fff; font-size:9px; font-weight:800; vertical-align:middle; }
 .pending-detail-group { margin-top:12px; }
 .pending-detail-group h4 { margin:0 0 7px; color:#805468; font-size:12px; }
